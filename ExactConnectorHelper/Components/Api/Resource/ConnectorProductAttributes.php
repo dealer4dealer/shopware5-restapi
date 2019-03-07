@@ -1,0 +1,82 @@
+<?php
+
+namespace ExactConnectorHelper\Components\Api\Resource;
+
+use Shopware\Components\Api\Resource\Resource;
+use Shopware\Models\Property\Option;
+use Shopware\Components\Api\Exception as ApiException;
+
+
+class ConnectorProductAttributes extends Resource
+{
+
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    public function getRepository()
+    {
+        return $this->getManager()->getRepository(Option::class);
+    }
+
+    /**
+     * Get Product Attributes
+     * @param array $criteria
+     * @param array $orderBy
+     * @return array
+     */
+    public function getList(array $criteria = [], array $orderBy = [])
+    {
+        $builder = $this->getRepository()->createQueryBuilder('filter');
+
+        // Create builder on requested filter and sort
+        $builder->addFilter($criteria)
+            ->addOrderBy($orderBy);
+
+        $query = $builder->getQuery();
+        $query->setHydrationMode($this->resultMode);
+
+        $paginator = $this->getManager()->createPaginator($query);
+
+        //returns the total count of the query
+        $totalResult = $paginator->count();
+
+        //returns attribute groups data
+        $groups = $paginator->getIterator()->getArrayCopy();
+
+        return ['groups' => $groups, 'total' => $totalResult];
+    }
+
+    /**
+     * Get one attribute group
+     *
+     * @param $id
+     * @return mixed
+     * @throws ApiException\NotFoundException
+     * @throws ApiException\ParameterMissingException
+     * @throws ApiException\PrivilegeException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getOne($id)
+    {
+        $this->checkPrivilege('read');
+
+        if (empty($id)) {
+            throw new ApiException\ParameterMissingException();
+        }
+
+        $builder = $this->getRepository()
+            ->createQueryBuilder('filter')
+            ->select('filter')
+            ->where('filter.id =?1')
+            ->setParameter(1, $id);
+
+        $group = $builder->getQuery()->getOneOrNullResult($this->getResultMode());
+
+        if (!$group) {
+            throw new ApiException\NotFoundException("Attribute group by id $id not found");
+        }
+
+        return $group;
+    }
+
+}
