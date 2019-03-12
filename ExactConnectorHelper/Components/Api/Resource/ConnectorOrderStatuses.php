@@ -5,7 +5,6 @@ namespace ExactConnectorHelper\Components\Api\Resource;
 use Shopware\Components\Api\Resource\Resource;
 use Shopware\Models\Order\Status;
 use Shopware\Components\Api\Exception as ApiException;
-use ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributesOptions as OptionsResource;
 
 class ConnectorOrderStatuses extends Resource
 {
@@ -78,37 +77,6 @@ class ConnectorOrderStatuses extends Resource
         }
 
         return $orderStatus;
-    }
-
-    public function getOneIncludeOptions($id) {
-        $this->checkPrivilege('read');
-
-        if (empty($id)) {
-            throw new ApiException\ParameterMissingException();
-        }
-
-        $builder = $this->getRepository()
-            ->createQueryBuilder('orderStatus')
-            ->select('orderStatus')
-            ->where('orderStatus.id =?1')
-            ->setParameter(1, $id);
-
-        $orderStatus = $builder->getQuery()->getOneOrNullResult($this->getResultMode());
-
-        $optionsResource = \Shopware\Components\Api\Manager::getResource('ConnectorProductAttributesOptions');
-
-        $options = $optionsResource->getList();
-
-        $data = array(
-            "status" => $orderStatus,
-            "options" => $options
-        );
-
-        if (!$orderStatus) {
-            throw new ApiException\NotFoundException("Order status by id $id not found");
-        }
-
-        return $data;
     }
 
 }
