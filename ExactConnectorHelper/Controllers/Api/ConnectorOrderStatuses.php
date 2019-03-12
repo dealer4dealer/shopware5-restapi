@@ -38,7 +38,6 @@ class Shopware_Controllers_Api_ConnectorOrderStatuses extends Shopware_Controlle
         $id = $this->Request()->getParam('id');
 
         $orderStatus = $this->resource->getOne($id);
-
         $this->View()->assign(['success' => true, 'data' => $orderStatus]);
     }
 

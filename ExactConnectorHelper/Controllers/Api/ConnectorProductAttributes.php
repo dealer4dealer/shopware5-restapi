@@ -36,8 +36,14 @@ class Shopware_Controllers_Api_ConnectorProductAttributes extends Shopware_Contr
     public function getAction()
     {
         $id = $this->Request()->getParam('id');
+        $option = $this->Request()->getParam('options');
 
-        $productAttributes = $this->resource->getOne($id);
+        if ($option) {
+            $productAttributes = $this->resource->getOneIncludeOptions($id, $this->container);
+        }
+        else {
+            $productAttributes = $this->resource->getOne($id);
+        }
 
         $this->View()->assign(['success' => true, 'data' => $productAttributes]);
     }

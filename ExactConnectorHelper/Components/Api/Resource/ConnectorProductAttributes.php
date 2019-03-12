@@ -79,4 +79,46 @@ class ConnectorProductAttributes extends Resource
         return $group;
     }
 
+    /**
+     * Get one attribute group with values
+     *
+     * @param $id
+     * @return mixed
+     * @throws ApiException\NotFoundException
+     * @throws ApiException\ParameterMissingException
+     * @throws ApiException\PrivilegeException
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function getOneIncludeOptions($id) {
+
+        $this->checkPrivilege('read');
+
+        if (empty($id)) {
+            throw new ApiException\ParameterMissingException();
+        }
+
+        $optionData = $this->getOne($id);
+
+        $valueData = $this->getRepository()
+            ->createQueryBuilder('option')
+            ->select('values.id, values.value, values.position, values.mediaId')
+            ->join('option.values', 'values')
+            ->where('values.optionId = :parameter')
+            ->setParameter('parameter', $id)
+            ->groupBy('values.id')
+            ->getQuery()
+            ->getResult();
+
+        $data = array(
+            "option" => $optionData,
+            "values" => $valueData
+        );
+
+        if (!$data) {
+            throw new ApiException\NotFoundException("Attribute group by id $id not found");
+        }
+
+        return $data;
+    }
+
 }
