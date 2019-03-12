@@ -3,7 +3,7 @@
 namespace ExactConnectorHelper\Components\Api\Resource;
 
 use Shopware\Components\Api\Resource\Resource;
-use Shopware\Models\Property\Option;
+use Shopware\Models\Property\Option as Option;
 use Shopware\Components\Api\Exception as ApiException;
 
 
