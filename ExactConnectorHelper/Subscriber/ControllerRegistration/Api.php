@@ -38,7 +38,9 @@ class Api implements SubscriberInterface
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorProductAttributesOptions'
             => 'onGetConnectorProductAttributesOptionsApiController',
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorVatCodes'
-            => 'onGetConnectorVatCodesApiController'
+            => 'onGetConnectorVatCodesApiController',
+            'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorPropertyValues'
+            => 'onGetConnectorPropertyValuesApiController'
         ];
     }
 
@@ -88,6 +90,14 @@ class Api implements SubscriberInterface
     public function onGetConnectorVatCodesApiController()
     {
         return $this->pluginDirectory . '/Controllers/Api/ConnectorVatCodes.php';
+    }
+
+    /**
+     * @return string
+     */
+    public function onGetConnectorPropertyValuesApiController()
+    {
+        return $this->pluginDirectory . '/Controllers/Api/ConnectorPropertyValues.php';
     }
 
 }
