@@ -42,7 +42,7 @@ class ConnectorShippingMethods extends Resource
         //returns shipping methods data
         $shippingMethods = $paginator->getIterator()->getArrayCopy();
 
-        return ['shippingMethods' => $shippingMethods, 'total' => $totalResult];
+        return ['data' => $shippingMethods, 'total' => $totalResult];
     }
 
     /**
