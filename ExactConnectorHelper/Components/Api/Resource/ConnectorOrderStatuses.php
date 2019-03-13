@@ -42,7 +42,7 @@ class ConnectorOrderStatuses extends Resource
         //returns the order statuses data
         $orderStatuses = $paginator->getIterator()->getArrayCopy();
 
-        return ['orderStatuses' => $orderStatuses, 'total' => $totalResult];
+        return ['data' => $orderStatuses, 'total' => $totalResult];
     }
 
 

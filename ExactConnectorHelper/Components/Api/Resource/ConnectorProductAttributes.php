@@ -43,7 +43,7 @@ class ConnectorProductAttributes extends Resource
         //returns attribute groups data
         $groups = $paginator->getIterator()->getArrayCopy();
 
-        return ['groups' => $groups, 'total' => $totalResult];
+        return ['data' => $groups, 'total' => $totalResult];
     }
 
     /**

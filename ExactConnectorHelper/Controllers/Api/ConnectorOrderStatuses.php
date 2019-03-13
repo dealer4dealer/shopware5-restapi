@@ -25,7 +25,8 @@ class Shopware_Controllers_Api_ConnectorOrderStatuses extends Shopware_Controlle
 
         $result = $this->resource->getList($filter, $sort);
 
-        $this->View()->assign(['success' => true, 'data' => $result]);
+        $this->View()->assign($result);
+        $this->View()->assign('success', true);
     }
 
     /**
@@ -38,7 +39,8 @@ class Shopware_Controllers_Api_ConnectorOrderStatuses extends Shopware_Controlle
         $id = $this->Request()->getParam('id');
 
         $orderStatus = $this->resource->getOne($id);
-        $this->View()->assign(['success' => true, 'data' => $orderStatus]);
+
+        $this->View()->assign(['data' => $orderStatus, 'success' => true]);
     }
 
 }

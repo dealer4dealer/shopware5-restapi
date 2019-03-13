@@ -39,10 +39,10 @@ class ConnectorVatCode extends Resource
         //returns the total count of the query
         $totalResult = $paginator->count();
 
-        //returns the order statuses data
+        //returns the vat codes data
         $vatCodes = $paginator->getIterator()->getArrayCopy();
 
-        return ['vatCodes' => $vatCodes, 'total' => $totalResult];
+        return ['data' => $vatCodes, 'total' => $totalResult];
     }
 
 

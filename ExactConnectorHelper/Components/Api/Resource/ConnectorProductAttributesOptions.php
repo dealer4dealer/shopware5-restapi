@@ -4,6 +4,7 @@ namespace ExactConnectorHelper\Components\Api\Resource;
 
 use Shopware\Components\Api\Resource\Resource;
 use Shopware\Models\Property\Value;
+use Shopware\Models\Property\Option as Option;
 use Shopware\Components\Api\Exception as ApiException;
 
 class ConnectorProductAttributesOptions extends Resource
@@ -42,7 +43,7 @@ class ConnectorProductAttributesOptions extends Resource
         //returns options values data
         $values = $paginator->getIterator()->getArrayCopy();
 
-        return ['optionValues' => $values, 'total' => $totalResult];
+        return ['data' => $values, 'total' => $totalResult];
     }
 
     /**
@@ -76,6 +77,38 @@ class ConnectorProductAttributesOptions extends Resource
         }
 
         return $optionValue;
+    }
+
+    /**
+     * Create new Attribute Value
+     *
+     * @param array $params
+     * @return Value
+     * @throws ApiException\ValidationException
+     * @throws ApiException\OrmException
+     */
+    public function create(array $params)
+    {
+        /** @var Value $value */
+        $optionRepository = $this->getManager()->getRepository(Option::class);
+        $option = $optionRepository->find("3");
+        $value = new Value($option);
+
+        $value->fromArray($params);
+
+        $violations = $this->getManager()->validate($value);
+
+        /**
+         * Handle Violation Errors
+         */
+        if ($violations->count() > 0) {
+            throw new ApiException\ValidationException($violations);
+        }
+
+        $this->getManager()->persist($value);
+        $this->flush();
+
+        return $value;
     }
 
 }

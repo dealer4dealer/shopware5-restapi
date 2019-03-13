@@ -25,7 +25,8 @@ class Shopware_Controllers_Api_ConnectorProductAttributes extends Shopware_Contr
 
         $result = $this->resource->getList($filter, $sort);
 
-        $this->View()->assign(['success' => true, 'data' => $result]);
+        $this->View()->assign($result);
+        $this->View()->assign('success', true);
     }
 
     /**
@@ -45,7 +46,7 @@ class Shopware_Controllers_Api_ConnectorProductAttributes extends Shopware_Contr
             $productAttributes = $this->resource->getOne($id);
         }
 
-        $this->View()->assign(['success' => true, 'data' => $productAttributes]);
+        $this->View()->assign(['data' => $productAttributes, 'success' => true]);
     }
 
 }

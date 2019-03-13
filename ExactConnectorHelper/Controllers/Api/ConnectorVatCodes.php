@@ -25,7 +25,8 @@ class Shopware_Controllers_Api_ConnectorVatCodes extends Shopware_Controllers_Ap
 
         $result = $this->resource->getList($filter, $sort);
 
-        $this->View()->assign(['success' => true, 'data' => $result]);
+        $this->View()->assign($result);
+        $this->View()->assign('success', true);
     }
 
     /**
@@ -38,7 +39,7 @@ class Shopware_Controllers_Api_ConnectorVatCodes extends Shopware_Controllers_Ap
         $id = $this->Request()->getParam('id');
 
         $vatCode = $this->resource->getOne($id);
-        $this->View()->assign(['success' => true, 'data' => $vatCode]);
+        $this->View()->assign(['data' => $vatCode, 'success' => true]);
     }
 
 }

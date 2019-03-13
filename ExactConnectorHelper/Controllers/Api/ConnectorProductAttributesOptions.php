@@ -25,7 +25,8 @@ class Shopware_Controllers_Api_ConnectorProductAttributesOptions extends Shopwar
 
         $result = $this->resource->getList($filter, $sort);
 
-        $this->View()->assign(['success' => true, 'data' => $result]);
+        $this->View()->assign($result);
+        $this->View()->assign('success', true);
     }
 
     /**
@@ -39,8 +40,26 @@ class Shopware_Controllers_Api_ConnectorProductAttributesOptions extends Shopwar
 
         $optionValue = $this->resource->getOne($id);
 
-        $this->View()->assign(['success' => true, 'data' => $optionValue]);
+        $this->View()->assign(['data' => $optionValue, 'success' => true]);
     }
 
+    /**
+     * Create new Attribute option
+     *
+     * POST /api/ConnectorProductAttributesOptions
+     */
+    public function postAction()
+    {
+        $value = $this->resource->create($this->Request()->getPost());
+
+        $location = $this->apiBaseUrl . 'ConnectorProductAttributesOptions/' . $value->getId();
+
+        $data = [
+            'id' => $value->getId(),
+            'location' => $location,
+        ];
+        $this->View()->assign(['data' => $data, 'success' => true]);
+        $this->Response()->setHeader('Location', $location);
+    }
 
 }
