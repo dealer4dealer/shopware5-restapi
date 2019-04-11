@@ -28,27 +28,35 @@ class ConnectorPropertyValues extends Resource
      * Get Shopware id's for the given group name and property value.
      * @param $attributeId
      * @param $groupName
-     * @param $propertyValue
+     * @param $propertyValues
      * @return array
      * @throws ApiException\NotFoundException
-     * @throws ApiException\ValidationException
      * @throws ApiException\OrmException
+     * @throws ApiException\ValidationException
      */
-    public function getPropertyIds($attributeId, $groupName, $propertyValue) {
+    public function getPropertyIds($attributeId, $groupName, $propertyValues) {
         $groupId = $this->getGroupId($groupName);
 
         if ($groupId == null)
             throw new ApiException\NotFoundException("Group by name $groupName not found");
 
-        $propertyId = $this->getPropertyValues($groupId, $propertyValue);
+        $valueArray = explode(',', $propertyValues);
+        $propertyIds = array();
+        foreach ($valueArray as $propertyValue) {
 
-        /**
-         * If property value does not exist yet, create a new value for the given group.
-         */
-        if ($propertyId == null)
-            $propertyId = $this->createPropertyValue($groupId, $propertyValue);
+            $propertyId = $this->getPropertyValues($groupId, $propertyValue);
 
-        return ['data' => ["attributeId" => $attributeId, "groupId" => $groupId, "valueId" => $propertyId]];
+            /**
+             * If property value does not exist yet, create a new value for the given group.
+             */
+            if ($propertyId == null)
+                $propertyId = $this->createPropertyValue($groupId, $propertyValue);
+
+            array_push($propertyIds, $propertyId);
+        }
+
+
+        return ['data' => ["attributeId" => $attributeId, "groupId" => $groupId, "valueId" => $propertyIds]];
     }
 
     /**

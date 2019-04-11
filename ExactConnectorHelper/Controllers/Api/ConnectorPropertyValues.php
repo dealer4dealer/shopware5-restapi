@@ -23,9 +23,9 @@ class Shopware_Controllers_Api_ConnectorPropertyValues extends Shopware_Controll
     {
         $attribute = $this->Request()->getParam('attribute');
         $group = $this->Request()->getParam('group');
-        $property = $this->Request()->getParam('property');
+        $properties = $this->Request()->getParam('property');
 
-        $result = $this->resource->getPropertyIds($attribute, $group, $property);
+        $result = $this->resource->getPropertyIds($attribute, $group, $properties);
 
         $this->View()->assign($result);
         $this->View()->assign('success', true);
