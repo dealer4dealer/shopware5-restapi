@@ -10,6 +10,7 @@
         <service id="shopware.api.connectorproductattributes" class="ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributes"/>
         <service id="shopware.api.connectorproductattributesoptions" class="ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributesOptions"/>
         <service id="shopware.api.connectorvatcodes" class="ExactConnectorHelper\Components\Api\Resource\ConnectorVatCode"/>
+        <service id="shopware.api.connectorcurrencies" class="ExactConnectorHelper\Components\Api\Resource\ConnectorCurrencies"/>
         <service id="shopware.api.connectorpropertyvalues" class="ExactConnectorHelper\Components\Api\Resource\ConnectorPropertyValues"/>
     </services>
 </container>
