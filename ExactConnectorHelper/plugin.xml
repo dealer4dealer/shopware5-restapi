@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plugin xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/shopware/shopware/5.3/engine/Shopware/Components/Plugin/schema/plugin.xsd">
+    <label lang="en">Exact Connector Helper</label>
+    <label lang="de">Exact Connector Helper</label>
+    <label lang="nl">Exact Connector Helper</label>
+    <version>2.0.0</version>
+    <copyright>(c) by dealer4dealer</copyright>
+    <license>(c)</license>
+    <author>dealer4dealer</author>
+    <link>https://www.dealer4dealer.nl</link>
+    <compatibility minVersion="5.5.0"/>
+</plugin>
