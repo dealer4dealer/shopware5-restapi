@@ -42,7 +42,9 @@ class Api implements SubscriberInterface
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorCurrencies'
             => 'onGetConnectorCurrenciesApiController',
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorPropertyValues'
-            => 'onGetConnectorPropertyValuesApiController'
+            => 'onGetConnectorPropertyValuesApiController',
+            'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorFreeFields'
+            => 'onGetConnectorFreeFieldsApiController',
         ];
     }
 
@@ -107,6 +109,14 @@ class Api implements SubscriberInterface
     public function onGetConnectorPropertyValuesApiController()
     {
         return $this->pluginDirectory . '/Controllers/Api/ConnectorPropertyValues.php';
+    }
+
+    /**
+     * @return string
+     */
+    public function onGetConnectorFreeFieldsApiController()
+    {
+        return $this->pluginDirectory . '/Controllers/Api/ConnectorFreeFields.php';
     }
 
 }
