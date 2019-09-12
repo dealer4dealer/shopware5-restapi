@@ -27,8 +27,10 @@ class ExactConnectorHelper extends Plugin
         );
 
         $this->setDateOnInstall();
+        $this->generateEntity();
         $context->scheduleClearCache(InstallContext::CACHE_LIST_ALL);
     }
+
     public function uninstall(UninstallContext $context)
     {
         if ($context->keepUserData()) {
@@ -45,6 +47,7 @@ class ExactConnectorHelper extends Plugin
             );
         }
 
+        $this->generateEntity();
         $context->scheduleClearCache(InstallContext::CACHE_LIST_ALL);
     }
 
@@ -58,25 +61,13 @@ class ExactConnectorHelper extends Plugin
 
     public function setDate(Enlight_Controller_ActionEventArgs $args)
     {
-        if ($args->getRequest()->has('id')) {
-            $repostory = Shopware()->Models()->getRepository(Article::class);
-            $id        = $args->getRequest()->getParam('id');
-
-            $product = $repostory->find($id);
-            $details = $product->getDetails();
-
-            foreach ($details as $detail) {
-                $detailID = $detail->getId();
-                $now      = date('Y-m-d H:i:s');
-
-                $sqlQuery =
-                    "UPDATE `s_articles_attributes`
-                        SET `xcore_date` =  " . "'" . $now . "'" .
-                    "WHERE `articledetailsID` = " . $detailID;
-                Shopware()->Db()->executeQuery($sqlQuery);
-            }
+        if ($args->getRequest()->has('id') && $args->getRequest()->getActionName() !== "saveAction") {
+            $this->setDateWhenUpdateProduct($args);
+        } else {
+            $this->setDateWhenSaveProduct();
         }
 
+        $this->generateEntity();
     }
 
     private function setDateOnInstall()
@@ -93,15 +84,54 @@ class ExactConnectorHelper extends Plugin
             $details    = $product->getDetails();
             $changeDate = $product->getChanged()->getTimestamp();
             //convert the date.
-            $date       = date("Y-m-d H:i:s", $changeDate);
+            $date = date("Y-m-d H:i:s", $changeDate);
             foreach ($details as $detail) {
                 $detailID = $detail->getId();
                 $sqlQuery =
                     "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $date . "'" .
-                    "WHERE `articledetailsID` = " . $detailID;
+                    "WHERE `articledetailsID` = " . $detailID .
+                    " AND  `xcore_date` IS NOT NULL";
                 Shopware()->Db()->executeQuery($sqlQuery);
             }
         }
+    }
+
+    private function generateEntity()
+    {
+        $metaDataCache = Shopware()->Models()->getConfiguration()->getMetadataCacheImpl();
+        $metaDataCache->deleteAll();
+        Shopware()->Models()->generateAttributeModels(['s_articles_attributes']);
+    }
+
+    private function setDateWhenUpdateProduct(Enlight_Controller_ActionEventArgs $args)
+    {
+        $repostory = Shopware()->Models()->getRepository(Article::class);
+        $id        = $args->getRequest()->getParam('id');
+        $now       = date('Y-m-d H:i:s');
+
+        $product = $repostory->find($id);
+        $details = $product->getDetails();
+
+        foreach ($details as $detail) {
+            $detailID = $detail->getId();
+            $sqlQuery =
+                "UPDATE `s_articles_attributes`
+                        SET `xcore_date` =  " . "'" . $now . "'" .
+                "WHERE `articledetailsID` = " . $detailID .
+                " AND  `xcore_date` IS NOT NULL";
+
+            Shopware()->Db()->executeQuery($sqlQuery);
+        }
+    }
+
+    private function setDateWhenSaveProduct()
+    {
+        $now      = date('Y-m-d H:i:s');
+        $sqlQuery =
+            "UPDATE `s_articles_attributes`
+                        SET `xcore_date` =  " . "'" . $now . "'" .
+            "WHERE `xcore_date` IS NULL ";
+        Shopware()->Db()->executeQuery($sqlQuery);
     }
 }
