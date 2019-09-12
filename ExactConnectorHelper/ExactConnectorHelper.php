@@ -91,7 +91,7 @@ class ExactConnectorHelper extends Plugin
                     "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $date . "'" .
                     "WHERE `articledetailsID` = " . $detailID .
-                    " AND  `xcore_date` IS NOT NULL";
+                    " AND  `xcore_date` IS NULL";
                 Shopware()->Db()->executeQuery($sqlQuery);
             }
         }
@@ -118,8 +118,7 @@ class ExactConnectorHelper extends Plugin
             $sqlQuery =
                 "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $now . "'" .
-                "WHERE `articledetailsID` = " . $detailID .
-                " AND  `xcore_date` IS NOT NULL";
+                "WHERE `articledetailsID` = " . $detailID;
 
             Shopware()->Db()->executeQuery($sqlQuery);
         }
