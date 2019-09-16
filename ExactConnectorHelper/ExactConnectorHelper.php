@@ -3,10 +3,12 @@
 namespace ExactConnectorHelper;
 
 use Enlight_Controller_ActionEventArgs;
+use Enlight_Hook_HookArgs;
 use Shopware\Components\Plugin;
 use Shopware\Components\Plugin\Context\InstallContext;
 use Shopware\Components\Plugin\Context\UninstallContext;
 use Shopware\Models\Article\Article;
+use Shopware\Models\Article\Detail;
 
 class ExactConnectorHelper extends Plugin
 {
@@ -55,19 +57,29 @@ class ExactConnectorHelper extends Plugin
     {
         return [
 
-            'Enlight_Controller_Action_PostDispatch_Backend_Article' => 'setDate',
+            'Enlight_Controller_Action_PostDispatch_Backend_Article'                        => 'setDate',
+            'Shopware_Controllers_Backend_Article::saveAction::after'                       => 'setDateWhenSaveProduct',
+            'Shopware_Controllers_Backend_Article::createConfiguratorVariantsAction::after' => 'setDateWhenSaveProduct',
+            'Shopware_Controllers_Backend_Article::saveDetailAction::after'                 => 'setDateWhenUpdateVariant',
         ];
     }
 
     public function setDate(Enlight_Controller_ActionEventArgs $args)
     {
-        if ($args->getRequest()->has('id') && $args->getRequest()->getActionName() !== "saveAction") {
+        if ($args->getRequest()->getParam('id')) {
             $this->setDateWhenUpdateProduct($args);
-        } else {
-            $this->setDateWhenSaveProduct();
         }
+    }
 
-        $this->generateEntity();
+    public function setDateWhenSaveProduct()
+    {
+        $now      = date('Y-m-d H:i:s');
+        $sqlQuery =
+            "UPDATE `s_articles_attributes`
+                        SET `xcore_date` =  " . "'" . $now . "'" .
+            "WHERE `xcore_date` IS NULL ";
+
+        Shopware()->Db()->executeQuery($sqlQuery);
     }
 
     private function setDateOnInstall()
@@ -124,13 +136,21 @@ class ExactConnectorHelper extends Plugin
         }
     }
 
-    private function setDateWhenSaveProduct()
+    public function setDateWhenUpdateVariant(Enlight_Hook_HookArgs $args)
     {
-        $now      = date('Y-m-d H:i:s');
-        $sqlQuery =
-            "UPDATE `s_articles_attributes`
+        $args      = $args->getArgs();
+        $repostory = Shopware()->Models()->getRepository(Detail::class);
+
+        if (isset($args['id']) && $id = $args['id']) {
+            $detail   = $repostory->find($id);
+            $now      = date('Y-m-d H:i:s');
+            $detailId = $detail->getId();
+            $sqlQuery =
+                "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $now . "'" .
-            "WHERE `xcore_date` IS NULL ";
-        Shopware()->Db()->executeQuery($sqlQuery);
+                "WHERE `articledetailsID` = " . $detailId;
+
+            Shopware()->Db()->executeQuery($sqlQuery);
+        }
     }
 }
