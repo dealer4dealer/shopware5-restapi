@@ -58,7 +58,6 @@ class ExactConnectorHelper extends Plugin
             'Enlight_Controller_Action_PostDispatch_Backend_Article'                        => 'setDate',
             'Shopware_Controllers_Backend_Article::saveAction::after'                       => 'setDateWhenSaveProduct',
             'Shopware_Controllers_Backend_Article::createConfiguratorVariantsAction::after' => 'setDateWhenSaveProduct',
-            'Shopware_Controllers_Backend_Article::saveDetailAction::after'                 => 'setDate',
         ];
     }
 
@@ -117,11 +116,9 @@ class ExactConnectorHelper extends Plugin
     private function setDateOnProduct(Enlight_Controller_ActionEventArgs $args)
     {
         $argsId = $args->getRequest()->getParam('id');
-        Shopware()->Container()->get('pluginlogger')->error(sprintf('the args id is: %s', $argsId));
         $now         = date('Y-m-d H:i:s');
         $requestBody = json_decode($args->getRequest()->getRawBody());
 
-        Shopware()->Container()->get('pluginlogger')->error(print_r(json_encode($requestBody), TRUE));
 
 //        //situation when updating product that have no variant.
         $mainDetailId = $requestBody->mainDetailId ?? $requestBody->id;
@@ -132,7 +129,7 @@ class ExactConnectorHelper extends Plugin
                 "WHERE `articledetailsID` = " . $mainDetailId;
             Shopware()->Db()->executeQuery($sqlQuery);
             Shopware()->Container()->get('pluginlogger')->info(sprintf('the xcore_date for product with detail id: %s  has been set to %s', $mainDetailId, $now));
-        } else{
+        } else {
             //situation when updating variant from articles overview.
             $repository = Shopware()->Models()->getRepository(Article::class);
             $product    = $repository->find($argsId);
@@ -150,6 +147,5 @@ class ExactConnectorHelper extends Plugin
                 }
             }
         }
-
     }
 }
