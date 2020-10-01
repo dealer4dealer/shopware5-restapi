@@ -3,12 +3,10 @@
 namespace ExactConnectorHelper;
 
 use Enlight_Controller_ActionEventArgs;
-use Enlight_Hook_HookArgs;
 use Shopware\Components\Plugin;
 use Shopware\Components\Plugin\Context\InstallContext;
 use Shopware\Components\Plugin\Context\UninstallContext;
 use Shopware\Models\Article\Article;
-use Shopware\Models\Article\Detail;
 
 class ExactConnectorHelper extends Plugin
 {
@@ -60,14 +58,14 @@ class ExactConnectorHelper extends Plugin
             'Enlight_Controller_Action_PostDispatch_Backend_Article'                        => 'setDate',
             'Shopware_Controllers_Backend_Article::saveAction::after'                       => 'setDateWhenSaveProduct',
             'Shopware_Controllers_Backend_Article::createConfiguratorVariantsAction::after' => 'setDateWhenSaveProduct',
-            'Shopware_Controllers_Backend_Article::saveDetailAction::after'                 => 'setDateWhenUpdateVariant',
+            'Shopware_Controllers_Backend_Article::saveDetailAction::after'                 => 'setDate',
         ];
     }
 
     public function setDate(Enlight_Controller_ActionEventArgs $args)
     {
         if ($args->getRequest()->getParam('id')) {
-            $this->setDateWhenUpdateProduct($args);
+            $this->setDateOnProduct($args);
         }
     }
 
@@ -116,41 +114,42 @@ class ExactConnectorHelper extends Plugin
         Shopware()->Models()->generateAttributeModels(['s_articles_attributes']);
     }
 
-    private function setDateWhenUpdateProduct(Enlight_Controller_ActionEventArgs $args)
+    private function setDateOnProduct(Enlight_Controller_ActionEventArgs $args)
     {
-        $repostory = Shopware()->Models()->getRepository(Article::class);
-        $id        = $args->getRequest()->getParam('id');
-        $now       = date('Y-m-d H:i:s');
+        $argsId = $args->getRequest()->getParam('id');
+        Shopware()->Container()->get('pluginlogger')->error(sprintf('the args id is: %s', $argsId));
+        $now         = date('Y-m-d H:i:s');
+        $requestBody = json_decode($args->getRequest()->getRawBody());
 
-        $product = $repostory->find($id);
-        $details = $product->getDetails();
+        Shopware()->Container()->get('pluginlogger')->error(print_r(json_encode($requestBody), TRUE));
 
-        foreach ($details as $detail) {
-            $detailID = $detail->getId();
+//        //situation when updating product that have no variant.
+        $mainDetailId = $requestBody->mainDetailId ?? $requestBody->id;
+        if (($mainDetailId === $argsId)) {
             $sqlQuery =
                 "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $now . "'" .
-                "WHERE `articledetailsID` = " . $detailID;
-
+                "WHERE `articledetailsID` = " . $mainDetailId;
             Shopware()->Db()->executeQuery($sqlQuery);
-        }
-    }
+            Shopware()->Container()->get('pluginlogger')->info(sprintf('the xcore_date for product with detail id: %s  has been set to %s', $mainDetailId, $now));
+        } else{
+            //situation when updating variant from articles overview.
+            $repository = Shopware()->Models()->getRepository(Article::class);
+            $product    = $repository->find($argsId);
+            if ($product) {
+                $details = $product->getDetails();
 
-    public function setDateWhenUpdateVariant(Enlight_Hook_HookArgs $args)
-    {
-        $args      = $args->getArgs();
-        $repostory = Shopware()->Models()->getRepository(Detail::class);
-
-        if (isset($args['id']) && $id = $args['id']) {
-            $detail   = $repostory->find($id);
-            $now      = date('Y-m-d H:i:s');
-            $detailId = $detail->getId();
-            $sqlQuery =
-                "UPDATE `s_articles_attributes`
+                foreach ($details as $detail) {
+                    $detailID = $detail->getId();
+                    $sqlQuery =
+                        "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $now . "'" .
-                "WHERE `articledetailsID` = " . $detailId;
+                        "WHERE `articledetailsID` = " . $detailID;
 
-            Shopware()->Db()->executeQuery($sqlQuery);
+                    Shopware()->Db()->executeQuery($sqlQuery);
+                }
+            }
         }
+
     }
 }
