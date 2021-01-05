@@ -23,12 +23,12 @@ class ExactConnectorHelper extends Plugin
                 'displayInBackend' => false,
                 'custom'           => false,
             ],
-            null, true
+            null,
+            true
         );
 
-        $this->setDateOnInstall();
         $this->generateEntity();
-        $context->scheduleClearCache(InstallContext::CACHE_LIST_ALL);
+        $this->setDateOnInstall();
     }
 
     public function uninstall(UninstallContext $context)
@@ -38,17 +38,29 @@ class ExactConnectorHelper extends Plugin
         }
 
         $attributeService = $this->container->get('shopware_attribute.crud_service');
-        $attributeExists  = $attributeService->get('s_articles_attributes', 'xcore_date');
 
-        if ($attributeExists) {
+        if ($attributeExists = $attributeService->get('s_articles_attributes', 'xcore_date')) {
             $attributeService->delete(
                 's_articles_attributes',
                 'xcore_date'
             );
         }
 
+        if ($translationExists = $attributeService->get('s_articles_translations', 'xcore_date')) {
+            $attributeService->delete(
+                's_articles_translations',
+                'xcore_date'
+            );
+        }
+
+        if ($configuratorExists = $attributeService->get('s_article_configurator_templates_attributes', 'xcore_date')) {
+            $attributeService->delete(
+                's_article_configurator_templates_attributes',
+                'xcore_date'
+            );
+        }
+
         $this->generateEntity();
-        $context->scheduleClearCache(InstallContext::CACHE_LIST_ALL);
     }
 
     public static function getSubscribedEvents()
@@ -87,9 +99,8 @@ class ExactConnectorHelper extends Plugin
 
         foreach ($ids as $id) {
             //for each product's id get both last changed date, and the Product's details.
-            explode(", ", $id);
-            $repostory  = Shopware()->Models()->getRepository(Article::class);
-            $product    = $repostory->find($id);
+            $repository = Shopware()->Models()->getRepository(Article::class);
+            $product    = $repository->find($id);
             $details    = $product->getDetails();
             $changeDate = $product->getChanged()->getTimestamp();
             //convert the date.
@@ -115,20 +126,21 @@ class ExactConnectorHelper extends Plugin
 
     private function setDateOnProduct(Enlight_Controller_ActionEventArgs $args)
     {
-        $argsId = $args->getRequest()->getParam('id');
+        $argsId      = $args->getRequest()->getParam('id');
         $now         = date('Y-m-d H:i:s');
         $requestBody = json_decode($args->getRequest()->getRawBody());
 
-
-//        //situation when updating product that have no variant.
-        $mainDetailId = $requestBody->mainDetailId ?? $requestBody->id;
+        //situation when updating product that have no variant.
+        $mainDetailId = $requestBody->mainDetailId ?: $requestBody->id;
         if (($mainDetailId === $argsId)) {
             $sqlQuery =
                 "UPDATE `s_articles_attributes`
                         SET `xcore_date` =  " . "'" . $now . "'" .
                 "WHERE `articledetailsID` = " . $mainDetailId;
             Shopware()->Db()->executeQuery($sqlQuery);
-            Shopware()->Container()->get('pluginlogger')->info(sprintf('the xcore_date for product with detail id: %s  has been set to %s', $mainDetailId, $now));
+            Shopware()->Container()->get('pluginlogger')->info(
+                sprintf('the xcore_date for product with detail id: %s  has been set to %s', $mainDetailId, $now)
+            );
         } else {
             //situation when updating variant from articles overview.
             $repository = Shopware()->Models()->getRepository(Article::class);

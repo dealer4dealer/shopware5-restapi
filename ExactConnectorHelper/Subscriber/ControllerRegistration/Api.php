@@ -33,6 +33,8 @@ class Api implements SubscriberInterface
             => 'onGetConnectorShippingMethodsApiController',
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorOrderStatuses'
             => 'onGetConnectorOrderStatusesApiController',
+            'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorOrderStatusesHistory'
+            => 'onGetConnectorOrderStatusesHistoryApiController',
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorProductAttributes'
             => 'onGetConnectorProductAttributesApiController',
             'Enlight_Controller_Dispatcher_ControllerPath_Api_ConnectorProductAttributesOptions'
@@ -71,6 +73,15 @@ class Api implements SubscriberInterface
     {
         return $this->pluginDirectory . '/Controllers/Api/ConnectorOrderStatuses.php';
     }
+
+    /**
+     * @return string
+     */
+    public function onGetConnectorOrderStatusesHistoryApiController()
+    {
+        return $this->pluginDirectory . '/Controllers/Api/ConnectorOrderStatusesHistory.php';
+    }
+
 
     /**
      * @return string

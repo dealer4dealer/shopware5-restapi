@@ -7,6 +7,7 @@
     <services>
         <service id="shopware.api.connectorshippingmethods" class="ExactConnectorHelper\Components\Api\Resource\ConnectorShippingMethods"/>
         <service id="shopware.api.connectororderstatuses" class="ExactConnectorHelper\Components\Api\Resource\ConnectorOrderStatuses"/>
+        <service id="shopware.api.connectororderstatuseshistory" class="ExactConnectorHelper\Components\Api\Resource\ConnectorOrderStatusesHistory"/>
         <service id="shopware.api.connectorproductattributes" class="ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributes"/>
         <service id="shopware.api.connectorproductattributesoptions" class="ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributesOptions"/>
         <service id="shopware.api.connectorvatcodes" class="ExactConnectorHelper\Components\Api\Resource\ConnectorVatCode"/>
