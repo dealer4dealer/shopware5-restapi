@@ -4,21 +4,18 @@
     <label lang="en">Exact Connector Helper</label>
     <label lang="de">Exact Connector Helper</label>
     <label lang="nl">Exact Connector Helper</label>
-    <version>2.2.1</version>
+    <version>2.2.2</version>
     <copyright>(c) by dealer4dealer</copyright>
     <license>proprietary</license>
     <author>dealer4dealer</author>
     <link>https://www.dealer4dealer.nl</link>
     <compatibility minVersion="5.5.0"/>
-    <changelog version="2.2.1">
+    <changelog version="2.2.2">
         <changes>
             <![CDATA[
         <p>
             <ul>
-                <li>Changed Events to update xcore_date field from different product variants frontend windows. </li>
-                <li>Completely remove the xcore_date when uninstalling the plugin</li>
-                <li>Changed the cache clearing functionality</li>
-                <li>Added a new Api endpoint OrderStatusHistory; which retrieve data from order_history table</li>
+                <li>Added Limits to API resources</li>
             </ul>
        </p>
         ]]>
@@ -27,9 +24,7 @@
             <![CDATA[
        <p>
             <ul>
-               <li>Completely remove the xcore_date when uninstalling the plugin</li>
-                <li>Changed the cache clearing functionality</li>
-                <li>Added a new Api endpoint OrderStatusHistory; which retrieve data from order_history table</li>
+             <li>Einschränkungen für API-Ressourcen hinzugefügt.</li>
             </ul>
        </p>
         ]]>
@@ -44,36 +39,37 @@
    The <i>Exact Connector Helper</i> extends Shopware 5 API by adding a set of new calls that are needed by <i>xCore</i>.
 Below, the list of API endpoints made available by the Exact Connector Helper:
 	<ul>
-		<li>Shop currencies; </li>
-        <li>Order status; </li>
-        <li>Order status history; </li>
-        <li>Shipping methods; </li>
-        <li>Vat codes; </li>
-        <li>Product's extra attributes; </li>
-        <li>Product's extra attributes options; </li>
+		<li>Shop currencies;</li>
+        <li>Order status;</li>
+        <li>Order status history;</li>
+        <li>Shipping methods;</li>
+        <li>Vat codes;</li>
+        <li>Product's extra attributes;</li>
+        <li>Product's extra attributes options.</li>
     </ul><br>
     In addition, the plugin add a new column to the product's attributes table <i>xcore_date</i>. This field allows the <i>xCore</i> to collect the last updated product's variants in order to synchronize the changed product's variant to Exact Online.<br>
-    For more information check the plugin manual: <a href="https://store.shopware.com/search?sSearch=teama_ExactConnectorHelper" rel="noopener">Plugin Manual</a></p>
+    For more information check the plugin manual: <a href="https://store.shopware.com/search?sSearch=teama_ExactConnectorHelper" target="_blank" rel="noopener">Plugin Manual</a></p>
    ]]>
     </description>
     <description lang="de">
         <![CDATA[
    <b>Exact Connector Helper</b>
    <p>
-   The <i>Exact Connector Helper</i> is a special Shopware 5 plugin for the users of the <i>xCore</i>.<br>
-   The <i>Exact Connector Helper</i> extends Shopware 5 API by adding a set of new calls that are needed by <i>xCore</i>.
-Below, the list of API endpoints made available by the Exact Connector Helper:
-	<ul>
-		<li>Shop currencies; </li>
-        <li>Order status; </li>
-        <li>Order status history; </li>
-        <li>Shipping methods; </li>
-        <li>Vat codes; </li>
-        <li>Product's extra attributes; </li>
-        <li>Product's extra attributes options; </li>
+   Der <i>Exact Connector Helper</i> ist ein spezielles Shopware 5-Plugin für die Benutzer von <i>xCore</i>.<br>
+   Der <i>Exact Connector Helper</i> erweitert die Shopware 5 API um eine Reihe von neuen Call-Strukturen, die von <i>xCore</i> benötigt werden.
+   Unten finden Sie eine Liste der API-Endpoints, die vom Exact Connector Helper zur Verfügung gestellt werden:
+  	<ul>
+		<li>Shop-Währungen;</li>
+        <li>Bestellstatus;</li>
+        <li>Bestellstatus Historie;</li>
+        <li>Versandarten;</li>
+        <li>USt-Codes;</li>
+        <li>Zusätzliche Produktattribute;</li>
+        <li>Optionen für zusätzliche Produktattribute.</li>
     </ul><br>
-    In addition, the plugin add a new column to the product's attributes table <i>xcore_date</i>. This field allows the <i>xCore</i> to collect the last updated product's variants in order to synchronize the changed product's variant to Exact Online.<br>
-    For more information check the plugin manual: <a href="https://store.shopware.com/search?sSearch=teama_ExactConnectorHelper" rel="noopener">Plugin Manual</a></p>
+    Außerdem fügt das Plugin eine neue Spalte in die Attributtabelle des Produkts, xcore_date, ein. Dieses Feld ermöglicht es <i>xCore<i/>, die zuletzt aktualisierten Produktvarianten zu erfassen, um die geänderte Produktvariante mit Exact Online zu synchronisieren.<br>
+Weitere Informationen finden Sie im Handbuch des Plugins: <a href="https://store.shopware.com/search?sSearch=teama_ExactConnectorHelper" target="_blank" rel="noopener">Handbuch des Plugins</a></p>
+   </p>
    ]]>
     </description>
 </plugin>
