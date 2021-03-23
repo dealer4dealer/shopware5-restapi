@@ -20,17 +20,22 @@ class ConnectorProductAttributes extends Resource
 
     /**
      * Get Product Attributes
+     *
+     * @param int $offset
+     * @param int $limit
      * @param array $criteria
      * @param array $orderBy
      * @return array
      */
-    public function getList(array $criteria = [], array $orderBy = [])
+    public function getList($offset = 0, $limit = 25, array $criteria = [], array $orderBy = [])
     {
         $builder = $this->getRepository()->createQueryBuilder('filter');
 
         // Create builder on requested filter and sort
         $builder->addFilter($criteria)
-            ->addOrderBy($orderBy);
+                ->addOrderBy($orderBy)
+                ->setFirstResult($offset)
+                ->setMaxResults($limit);
 
         $query = $builder->getQuery();
         $query->setHydrationMode($this->resultMode);
