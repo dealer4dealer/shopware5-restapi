@@ -4,18 +4,18 @@
     <label lang="en">Exact Connector Helper</label>
     <label lang="de">Exact Connector Helper</label>
     <label lang="nl">Exact Connector Helper</label>
-    <version>2.2.2</version>
+    <version>2.2.3</version>
     <copyright>(c) by dealer4dealer</copyright>
     <license>proprietary</license>
     <author>dealer4dealer</author>
     <link>https://www.dealer4dealer.nl</link>
     <compatibility minVersion="5.5.0"/>
-    <changelog version="2.2.2">
+    <changelog version="2.2.3">
         <changes>
             <![CDATA[
         <p>
             <ul>
-                <li>Added Limits to API resources</li>
+                <li>Minor fixes to API resources</li>
             </ul>
        </p>
         ]]>
@@ -24,7 +24,7 @@
             <![CDATA[
        <p>
             <ul>
-             <li>Einschränkungen für API-Ressourcen hinzugefügt.</li>
+             <li>Kleinere Korrekturen an API-Ressourcen</li>
             </ul>
        </p>
         ]]>
