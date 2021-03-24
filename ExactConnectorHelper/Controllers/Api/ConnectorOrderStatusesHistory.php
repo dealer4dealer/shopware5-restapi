@@ -20,10 +20,12 @@ class Shopware_Controllers_Api_ConnectorOrderStatusesHistory extends Shopware_Co
      */
     public function indexAction()
     {
+        $limit  = $this->Request()->getParam('limit', 1000);
+        $offset = $this->Request()->getParam('start', 0);
         $filter = $this->Request()->getParam('filter', []);
-        $sort = $this->Request()->getParam('sort', []);
+        $sort   = $this->Request()->getParam('sort', []);
 
-        $result = $this->resource->getList($filter, $sort);
+        $result = $this->resource->getList($offset, $limit, $filter, $sort);
 
         $this->View()->assign($result);
         $this->View()->assign('success', true);

@@ -11,7 +11,7 @@ class ConnectorOrderStatusesHistory extends Resource
 {
 
     /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository|\Doctrine\ORM\EntityRepository|\Shopware\Models\Dispatch\Repository
+     * @return \Doctrine\ORM\EntityRepository
      */
     public function getRepository()
     {
