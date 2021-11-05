@@ -10,12 +10,12 @@
     <author>dealer4dealer</author>
     <link>https://www.dealer4dealer.nl</link>
     <compatibility minVersion="5.5.0"/>
-    <changelog version="2.2.4">
+    <changelog version="2.2.5">
         <changes>
             <![CDATA[
         <p>
             <ul>
-                <li>Solved a server error by specifying the services visibility and set to public</li>
+                <li>Services visibility set to public for one that was missed</li>
             </ul>
        </p>
         ]]>
@@ -24,7 +24,7 @@
             <![CDATA[
        <p>
             <ul>
-             <li>Serverfehler behoben, indem die Sichtbarkeit der Dienste angegeben und auf öffentlich gesetzt wurde</li>
+             <li>Die Sichtbarkeit von Diensten wurde für einen verpassten Dienst auf "Öffentlich" festgelegt</li>
             </ul>
        </p>
         ]]>
