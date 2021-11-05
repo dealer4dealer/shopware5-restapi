@@ -6,7 +6,7 @@
 
     <services>
         <service public="true" id="shopware.api.connectorshippingmethods" class="ExactConnectorHelper\Components\Api\Resource\ConnectorShippingMethods"/>
-        <service public="false" id="shopware.api.connectororderstatuses" class="ExactConnectorHelper\Components\Api\Resource\ConnectorOrderStatuses"/>
+        <service public="true" id="shopware.api.connectororderstatuses" class="ExactConnectorHelper\Components\Api\Resource\ConnectorOrderStatuses"/>
         <service public="true" id="shopware.api.connectororderstatuseshistory" class="ExactConnectorHelper\Components\Api\Resource\ConnectorOrderStatusesHistory"/>
         <service public="true" id="shopware.api.connectorproductattributes" class="ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributes"/>
         <service public="true" id="shopware.api.connectorproductattributesoptions" class="ExactConnectorHelper\Components\Api\Resource\ConnectorProductAttributesOptions"/>
