@@ -10,12 +10,12 @@
     <author>dealer4dealer</author>
     <link>https://www.dealer4dealer.nl</link>
     <compatibility minVersion="5.5.0"/>
-    <changelog version="2.2.3">
+    <changelog version="2.2.4">
         <changes>
             <![CDATA[
         <p>
             <ul>
-                <li>Minor fixes to API resources</li>
+                <li>Solved a server error by specifying the services visibility and set to public</li>
             </ul>
        </p>
         ]]>
@@ -24,7 +24,7 @@
             <![CDATA[
        <p>
             <ul>
-             <li>Kleinere Korrekturen an API-Ressourcen</li>
+             <li>Serverfehler behoben, indem die Sichtbarkeit der Dienste angegeben und auf öffentlich gesetzt wurde</li>
             </ul>
        </p>
         ]]>
